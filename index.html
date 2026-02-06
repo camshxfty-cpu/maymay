@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Open Me 💌</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffe6f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #envelope {
+      width: 250px;
+      height: 150px;
+      background: #ff4d6d;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 1s;
+      position: relative;
+      perspective: 1000px;
+      z-index: 10;
+    }
+
+    #envelope::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      background: #ff1a4d;
+      top: 0;
+      left: 0;
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+      transition: transform 1s;
+      transform-origin: top center;
+    }
+
+    #envelope.open::before {
+      transform: rotateX(180deg);
+    }
+
+    #letter {
+      display: none;
+      margin-top: 30px;
+      background: #fff0f6;
+      padding: 20px;
+      border-radius: 10px;
+      width: 350px;
+      text-align: center;
+      font-size: 22px;
+      color: #ff1a4d;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease forwards;
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    /* Heart animation */
+    .heart {
+      position: absolute;
+      font-size: 24px;
+      color: #ff1a4d;
+      animation: floatUp 3s linear forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity:1;}
+      100% { transform: translateY(-500px) scale(1.5); opacity:0;}
+    }
+
+    /* Images appear and float */
+    #images {
+      display: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    #images img {
+      position: absolute;
+      width: 200px;
+      border-radius: 10px;
+      display: none;
+      animation: pop 0.5s ease forwards;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0);}
+      100% { transform: scale(1);}
+    }
+
+    /* Buttons */
+    #buttons {
+      display: none;
+      margin-top: 20px;
+      z-index: 10;
+    }
+
+    #buttons button {
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      margin: 0 10px;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    #buttons button:hover {
+      transform: scale(1.1);
+    }
+
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: red;
+      opacity: 0.8;
+      top: 0;
+      pointer-events: none;
+      animation: fall 3s linear forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(500px) rotate(360deg); opacity:0; }
+    }
+
+  </style>
+</head>
+<body>
+  <div id="envelope">📩 Click Me</div>
+
+  <div id="letter">
+    Hi my love! 🌸<br>
+    Will you be my Valentine may? 💌
+  </div>
+
+  <div id="images">
+    <img src="https://i.postimg.cc/TwL8bL08/m.png" alt="image1">
+    <img src="https://i.postimg.cc/xd8BrJWN/IMG-5181.jpg" alt="image2">
+    <img src="https://i.postimg.cc/Ssz5R0SH/2025-12-22-01-09-22.png" alt="image3">
+  </div>
+
+  <div id="buttons">
+    <button id="yesBtn">Yes ❤️</button>
+    <button id="noBtn">No 😢</button>
+  </div>
+
+  <!-- Your direct MP3 music -->
+  <audio id="music" src="https://www.dropbox.com/scl/fi/h16imqatrhhlnhlngqsmk/Joey-Bada-Love-Is-Only-A-Feeling-Official-Audio.mp3?dl=1" loop></audio>
+
+  <!-- Heart sound -->
+  <audio id="heartSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    const letter = document.getElementById('letter');
+    const images = document.getElementById('images');
+    const buttons = document.getElementById('buttons');
+    const music = document.getElementById('music');
+    const heartSound = document.getElementById('heartSound');
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.fontSize = Math.random() * 30 + 15 + 'px';
+      heart.innerText = '❤️';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 3000);
+    }
+
+    function createConfetti() {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 3000);
+    }
+
+    envelope.addEventListener('click', () => {
+      envelope.classList.add('open');
+
+      setTimeout(() => {
+        letter.style.display = 'block';
+        buttons.style.display = 'block';
+        music.play();
+        setInterval(createHeart, 300);
+
+        // Scatter images and make them float slowly
+        const imgs = document.querySelectorAll('#images img');
+        imgs.forEach(img => {
+          img.style.display = 'block';
+          img.style.top = Math.random() * (window.innerHeight - 200) + 'px';
+          img.style.left = Math.random() * (window.innerWidth - 200) + 'px';
+          // Add floating motion
+          let dx = (Math.random() - 0.5) * 0.5; // horizontal speed
+          let dy = (Math.random() - 0.5) * 0.5; // vertical speed
+          function floatImg() {
+            let top = parseFloat(img.style.top);
+            let left = parseFloat(img.style.left);
+            top += dy;
+            left += dx;
+            if(top < 0 || top > window.innerHeight - 200) dy = -dy;
+            if(left < 0 || left > window.innerWidth - 200) dx = -dx;
+            img.style.top = top + 'px';
+            img.style.left = left + 'px';
+            requestAnimationFrame(floatImg);
+          }
+          floatImg();
+        });
+
+        images.style.display = 'block';
+      }, 1000);
+    });
+
+    document.getElementById('yesBtn').addEventListener('click', () => {
+      heartSound.play();
+      for (let i = 0; i < 100; i++) {
+        setTimeout(createConfetti, i*30);
+      }
+    });
+
+    document.getElementById('noBtn').addEventListener('click', () => {
+      alert("It's okay! Maybe another time 😊");
+    });
+  </script>
+</body>
+</html>
